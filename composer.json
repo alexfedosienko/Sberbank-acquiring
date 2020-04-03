@@ -1,0 +1,25 @@
+{
+    "name": "alexfedosienko/Sberbank-acquiring",
+    "type": "library",
+    "description": "Simple Sberbank acquiring",
+    "keywords": [
+        "sberbank",
+        "acquiring"
+    ],
+    "homepage": "https://github.com/alexfedosienko/Sberbank-acquiring",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexander Fedosienko", 
+            "email": "alexfedosienko@gmail.com",
+            "homepage": "https://github.com/alexfedosienko/",
+            "role": "Developer"
+        }
+    ],    
+    "require": {
+        "php": "^7.1"
+    },
+    "autoload": {
+        "psr-4": { "alexfedosienko\\": "src" }
+    }
+}
