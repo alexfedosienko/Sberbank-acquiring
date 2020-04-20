@@ -32,6 +32,14 @@ class SBRF_API
 		$this->requestData['failUrl'] = $returnFailURL;
 	}
 
+	public function isExistOrder($orderNumber) {
+		$response = $this->getOrderInfo('', $orderNumber);
+		// Заказ не найден
+		if ($response->errorCode == 6) return false;
+		// Заказ зарегистрирован
+		if ($response->errorCode == 0) return true;
+	}
+
 	public function registerOrder($orderSum, $orderNumber, $description)
 	{
 		$requestData = array();
@@ -44,10 +52,11 @@ class SBRF_API
 			$response = $this->getOrderInfo('', $orderNumber);
 			if ($response->errorCode == 0) {
 				if ($response->actionCode == -100) { // Не было попыток оплаты.
-					return array(
+					$resp = array(
 						'orderId' => $response->attributes[0]->value,
-						'formUrl' => $this->requestURI.'payment/merchants/maki74/payment_ru.html?mdOrder='.$response->attributes[0]->value
+						'formUrl' => $this->requestURI.'payment/merchants/sbersafe_id/payment_ru.html?mdOrder='.$response->attributes[0]->value
 					);
+					return (object)$resp;
 				} elseif ($response->actionCode == -2007) { // Истёк срок ожидания ввода данных.
 					$requestData['orderNumber'] = $requestData['orderNumber']."_".date('dmyHis', strtotime('now'));
 					$response = $this->request($requestData, $this->registerOrderURI);
