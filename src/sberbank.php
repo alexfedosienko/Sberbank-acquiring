@@ -60,6 +60,7 @@ class SBRF_API
 				} elseif ($response->actionCode == -2007) { // Истёк срок ожидания ввода данных.
 					$requestData['orderNumber'] = $requestData['orderNumber']."_".date('dmyHis', strtotime('now'));
 					$response = $this->request($requestData, $this->registerOrderURI);
+
 					return $response;
 				} elseif ($response->actionCode == 0) { // Успешно
 					if ($response->paymentAmountInfo->paymentState == "DEPOSITED") { 
@@ -68,6 +69,10 @@ class SBRF_API
 					} else {
 						return false;
 					}
+				} elseif ($response->actionCode == 5) { // Операция отклонена. Обратитесь в банк, выпустивший карту.
+					$requestData['orderNumber'] = $requestData['orderNumber']."_".date('dmyHis', strtotime('now'));
+					$response = $this->request($requestData, $this->registerOrderURI);
+					return $response;
 				} else {
 					return $response;
 				}
